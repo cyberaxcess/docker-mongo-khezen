@@ -1,6 +1,6 @@
 FROM debian:testing-slim
 
-MAINTAINER Guillaume Simonneau <simonneaug@gmail.com>
+MAINTAINER Alan Richert <alan.richert@gmail.com>
 LABEL Descritpion="mongodb roccksdb mongo mongod mongos mongotools bsondump mongodump mongorestore mongoimport mongoexport mongostat mongofiles mongooplog mongotop"
 
 COPY ./src/setup/ /run/setup/

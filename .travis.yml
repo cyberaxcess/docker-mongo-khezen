@@ -1,0 +1,25 @@
+sudo: required
+services:
+  - docker
+env:
+  global:
+    - REGISTRY_USER=cyberaxcess
+    # REGISTRY_PASS=...
+    - secret: "DYAFgcTzQloj4lojIUJqGyyoW2L9hloMxJofPeWERTcKtMh1YTe/hgY4WyjDE4nhXIDtOLTjzlxDywRSDjQuUxGhSotPEmKbV/5ooyIPVKWtuUC9lHekMLn6Y6qqZyqP64jY+LTQHDwYEPCKrc5mFs9wfdpSp5oa8kGySKUs694RslU6wjr3jkBbx5d/wVI1YX7z+65yf5TePKHv2MZdSB2NV6Kc+/5t1we/dKzPN9nNlwrPl5S78eG0H9iA5Rg8A2Om6Xaqqxkjj0u/R5NDFItAd2pJzkPHkEn8zA5Slk/+1Y6VNxzWinT6qztrMZVvf3IcYEizeFtvDfixWHeRKRcWfxm6dnjFZVxNdl1BFqQ17/E/9H/nuFYpeZbA6IZIdhgxQskWyGYG0HOyES3GGBSA5rqewmcdGCPRw4nLSFYJk5NkZYRej1n33L3sVxjd6piCRclKIGm1LDtXksYDEyZy9dvH6zsQhVckk2PhCRAI6ZQbe86KyS9mMFg+xbs7ZzeVqHjtckqVZTbl8PTEJgDQpiM+JeE6ZV0xpjuZEKe5zwn6ReAZnt494IC8bSKoLIMOry7lU9p4SC6Vp93QfgvD2+3g9bgApB87pxQQ5rLU8Ks9AGa89+q7eMcOUMtf8/v00cr6fvYeOU85DLga1UHUKRF7tIjZZJHCrUrgjM0="
+
+before_script:
+  - docker pull myorg/myimage || true
+script:
+  - docker build --pull --cache-from cyberaxcess/docker-mongorocks --tag cyberaxcess/docker-mongorocks .
+
+
+after_script:
+  - docker images
+
+before_deploy:
+  - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASS"
+deploy:
+  provider: script
+  script: docker push cyberaxcess/docker-mongorocks
+  on:
+    branch: master
